@@ -14,17 +14,17 @@ If using Maven, just add the following dependency to your module's `pom.xml` fil
 <dependency>
   <groupId>com.taxamo</groupId>
   <artifactId>taxamo-java</artifactId>
-  <version>1.0.5</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
 ## Example implementation
 
-There is an example project for integration with Taxamo and PayPal Express Checkout at [https://github.com/taxamo/java-paypal-express-checkout-example](https://github.com/taxamo/java-paypal-express-checkout-example), that can be used as a template, regardless if PayPal EC support is needed or not.
+There is an example project for integration with Taxamo and PayPal Express Checkout at [https://github.com/taxamo/java-paypal-express-checkout-example](https://github.com/taxamo/java-paypal-express-checkout-example) that can be used as a template, regardless if PayPal EC support is needed or not.
 
 ### Usage
 
-The [TaxamoExample.java](https://github.com/taxamo/taxamo-java/blob/master/src/example/java/TaxamoExample.java) file provides example of most common operations - transaction storage, retrieval and confirmation.
+The [TaxamoExample.java](https://github.com/taxamo/taxamo-java/blob/master/src/example/java/TaxamoExample.java) file provides example of the most common operations - transaction storage, retrieval and confirmation.
 
 ```java
 import com.taxamo.client.api.TaxamoApi;
@@ -42,8 +42,7 @@ public class TaxamoExample {
         TaxamoApi api = new TaxamoApi("SamplePrivateTestKey1");
 
         long t = System.currentTimeMillis();
-        CreateTransactionOut createTransactionOut = api.createTransaction(
-            new CreateTransactionIn()
+        CreateTransactionOut createTransactionOut = api.createTransaction(new CreateTransactionIn()
                 .setTransaction(new InputTransaction()
                         .setCurrencyCode("USD")
                         .setBuyerIp("127.0.0.1")
@@ -61,27 +60,26 @@ public class TaxamoExample {
 
         //first API call will take longer due to SSL handshake
         String key = createTransactionOut.getTransaction().getKey();
-        System.out.println("Created transaction with key: " + key + " in " + 
-            (System.currentTimeMillis() - t) + "ms,\n" +
-            "Total amount: " + createTransactionOut.getTransaction().getTotalAmount());
+        System.out.println("Created transaction with key: " + key + " in " + (System.currentTimeMillis() - t) + "ms,\n" +
+                           "Total amount: " + createTransactionOut.getTransaction().getTotalAmount());
 
         t = System.currentTimeMillis();
 
         //retrieve transaction details
         GetTransactionOut getTransactionOut = api.getTransaction(key);
-        System.out.println("Retrieved transaction in " + (System.currentTimeMillis() - t) + 
-            "ms: " + getTransactionOut.getTransaction().getKey());
+        System.out.println("Retrieved transaction in " + (System.currentTimeMillis() - t) + "ms: " + getTransactionOut.getTransaction().getKey());
+
 
         t = System.currentTimeMillis();
 
         //confirm a transaction for it to appear in VAT settlement
         api.confirmTransaction(key, new ConfirmTransactionIn());
-        System.out.println("Confirmed transaction with key: " + key + 
-            " in " + (System.currentTimeMillis() - t) + "ms");
+        System.out.println("Confirmed transaction with key: " + key + " in " + (System.currentTimeMillis() - t) + "ms");
+
     }
 }
 ```
 
-### Other operations
+## Documentation
 
-Please review the [RESTful API documentation](/apidocs/docs.html) for a complete list of operations.
+Please review the [RESTful API documentation](https://www.taxamo.com/doc/api/) for a complete list of operations.
